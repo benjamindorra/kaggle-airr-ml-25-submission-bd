@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#xhost +local:docker;
+
+#XSOCK=/tmp/.X11-unix;
+
+
+docker run --gpus all -it \
+	--device /dev/nvidia-uvm --device /dev/nvidia-uvm-tools \
+    --device /dev/nvidia0 --device /dev/nvidiactl \
+    -v /home/benj/Projects/kaggle/AIRR-ML-25:/home/appuser/code \
+	--shm-size=8gb -e DISPLAY=${DISPLAY} \
+    --net=host -p 8888:8888 \
+    --rm \
+	--name=pytorch-cuda pytorch-cuda:latest
+
+#-v /home/benj/dockenvs/pytorch113/GlobalConv:/home/appuser/GlobalConv/ \
+#--net=host -p 6006:6006 \
+#--net=host -v $XSOCK:$XSOCK \
+#--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" 
+#--env="DISPLAY"
+#-e DISPLAY=${DISPLAY}
