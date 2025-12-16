@@ -10,9 +10,10 @@ RUN python3 -m pip install --break-system-packages transformers
 RUN python3 -m pip install --break-system-packages mlflow
 RUN python3 -m pip install --break-system-packages pandas
 RUN python3 -m pip install --break-system-packages scikit-learn
+RUN python3 -m pip install --break-system-packages pytest
 
 # create a non-root user
-ARG USER_ID=999
+ARG USER_ID=1001
 RUN useradd -m --no-log-init --system  --uid ${USER_ID} appuser -g sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER appuser

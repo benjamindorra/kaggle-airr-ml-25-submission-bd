@@ -1,20 +1,16 @@
-import mlflow
-from categorical_data_value import standardize_dataset
+import os
 
-import test
-import train
+from airrmodel.scalers import get_standard_scalers
 
 
-def get_config():
-    """
-    Configuration for the current run
-    """
+def test_get_scalers():
     config = {
         "validation_mode": "train_val_split",
-        "validation_datasets": ["train_dataset1"],
+        "data_dir": "../train_datasets/train_datasets",
+        "validation_datasets": ["train_dataset_1"],
         "training_datasets": [
-            "train_dataset2",
-            "train_dataset3",
+            "train_dataset_2",
+            "train_dataset_3",
             "train_dataset_4",
             "train_dataset_5",
             "train_dataset_6",
@@ -32,7 +28,6 @@ def get_config():
         "bag_categorical_features": [
             "study_group_description",
             "sex",
-            "age",
             "race",
             "A",
             "B",
@@ -46,18 +41,27 @@ def get_config():
             "DRB4",
             "DRB5",
         ],
+        "bag_numerical_features": [
+            "age",
+        ],
     }
-    return config
+    # test initialization
+    print(os.getcwd())
+    cache_path = "test_cache"
+    if os.path.exists(cache_path):
+        os.remove(cache_path)
 
+    scalers = get_standard_scalers(config, cache_path)
 
-def main():
-    config = get_config()
-    catego
-    model_path = "ems2-attention-mil.pt"
-    train(config=config, model_path=model_path)
-    model = torch.jit.load(model_path)
-    test(model=model)
+    assert len(scalers) == 2
 
+    assert all(isinstance(scaler, StandardScaler) for scaler in scalers.values())
 
-if __name__ == "__main__":
-    main()
+    # test caching
+    scalers = get_standard_scalers(config, cache_path)
+
+    assert len(scalers) == 2
+
+    assert all(isinstance(scaler, StandardScaler) for scaler in scalers.values())
+
+    print(scalers)
