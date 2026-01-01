@@ -1,0 +1,22 @@
+FROM nvidia/cuda:12.6.3-cudnn-devel-ubuntu22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y \
+	python3-dev python3-pip git sudo
+RUN python3 -m pip install torch==2.9.0 --index-url https://download.pytorch.org/whl/cu126
+RUN python3 -m pip install tqdm jupyterlab
+RUN python3 -m pip install matplotlib
+RUN python3 -m pip install transformers
+RUN python3 -m pip install mlflow
+RUN python3 -m pip install pandas
+RUN python3 -m pip install scikit-learn
+RUN python3 -m pip install pytest
+
+# create a non-root user
+ARG USER_ID=1001
+RUN useradd -m --no-log-init --system  --uid ${USER_ID} appuser -g sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+USER appuser
+WORKDIR /home/appuser
+
+ENV PATH="/home/appuser/.local/bin:${PATH}"

@@ -1,5 +1,4 @@
 from torch import nn, uniform
-from transformers import AutoTokenizer, EsmModel
 
 
 class EsmABMIL:
@@ -27,9 +26,6 @@ class EsmABMIL:
         self.features_dropout = features_dropout
         self.num_classes = num_classes
         self.num_features = num_features
-        self.tokenizer = AutoTokenizer.from_pretrained(feature_extraction_model)
-        self.feature_extractor = EsmModel.from_pretrained(feature_extraction_model)
-        self.embed_dim = self.feature_extractor.config.hidden_size
         self.attention_head = nn.Sequential(
             nn.Linear(self.embed_dim, self.attention_dim),
             nn.Tanh(),
