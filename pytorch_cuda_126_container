@@ -12,7 +12,7 @@ docker run --gpus all -it \
 	--shm-size=8gb -e DISPLAY=${DISPLAY} \
     --net=host -p 8888:8888 \
     --rm \
-	--name=pytorch-cuda pytorch-cuda:latest
+	--name=pytorch-cuda-12 pytorch-cuda-12:latest
 
 #-v /home/benj/dockenvs/pytorch113/GlobalConv:/home/appuser/GlobalConv/ \
 #--net=host -p 6006:6006 \
